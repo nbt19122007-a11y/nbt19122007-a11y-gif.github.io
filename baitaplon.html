@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏋️‍♂️ BaThuc Gym - Nâng tầm sức khỏe của bạn</title>
+
+<!-- Font & Icon -->
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2964/2964514.png">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(180deg, #fdfdfd, #eaf3ff);
+    color: #333;
+    overflow-x: hidden;
+  }
+
+  /* --- TIÊU ĐỀ --- */
+  header {
+    background: linear-gradient(90deg, #004aad, #ff6b35);
+    text-align: center;
+    padding: 45px 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: 46px;
+    color: #ffd9c8;
+    letter-spacing: 3px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+  }
+  /* --- THANH ĐIỀU HƯỚNG  --- */
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    background: rgb(255, 220, 203);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+  }
+
+  nav.shrink {
+    padding: 5px 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+  }
+
+  nav a {
+    text-decoration: none;
+    color: #004aad;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 25px;
+    transition: all 0.3s;
+  }
+
+  nav a:hover, nav a.active {
+    background: #ff6b35;
+    color: white;
+  }
+
+  /* --- PHẦN CHUNG --- */
+  section {
+    display: none;
+    padding: 60px 20px;
+    animation: fadeIn 0.6s ease;
+    text-align: center;
+  }
+
+  section.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- HERO / GIỚI THIỆU --- */
+  .hero {
+    background: linear-gradient(120deg, #eaf3ff, #fff4ee);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 70px 20px;
+    border-radius: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    margin: 30px auto;
+    width: 90%;
+  }
+
+  .hero-text {
+    flex: 1;
+    min-width: 300px;
+    max-width: 500px;
+    text-align: left;
+  }
+
+  .hero h2 {
+    font-family: 'Baloo 2', cursive;
+    color: #004aad;
+    font-size: 2.4em;
+  }
+
+  .hero p {
+    color: #555;
+    font-size: 1.1em;
+    margin-bottom: 20px;
+  }
+
+  .hero img {
+    width: 370px;
+    height: 290px;
+    border-radius: 20px;
+    object-fit: cover;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+    transition: transform 0.4s ease;
+  }
+
+  .hero img:hover { transform: scale(1.05); }
+
+  .btn {
+    background: #ff6b35;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 1em;
+  }
+
+  .btn:hover {
+    background: #e65c29;
+    transform: scale(1.1);
+  }
+
+  /* --- DỊCH VỤ --- */
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .service-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: transform 0.4s, box-shadow 0.4s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .service-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease;
+  }
+
+  .service-card:hover {
+    transform: translateY(-7px) scale(1.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .service-card img{
+    width: 370px;
+    height: 320px;
+    border-radius: 15px;
+    
+  }
+  /* --- HUẤN LUYỆN VIÊN --- */
+  .coach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 20px;
+  }
+
+  .coach-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    padding: 20px;
+    transition: 0.3s;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .coach-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.8s ease;
+  }
+
+  .coach-card:hover { transform: translateY(-5px); }
+  .coach-card img {
+    width: 300px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+  }
+
+  /* BẢNG GIÁ */
+  .price-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+  }
+
+  .price-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+    transition: 0.4s;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .price-card.visible { opacity: 1; transform: translateY(0); }
+
+  .price-card:hover {
+    transform: translateY(-7px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  }
+
+  .price-card h3 {
+    font-family: 'Baloo 2';
+    color: #004aad;
+    margin-bottom: 10px;
+  }
+
+  .price {
+    font-size: 1.4em;
+    font-weight: 700;
+    color: #ff6b35;
+    margin-bottom: 10px;
+  }
+
+  .price-card ul {
+    list-style: none;
+    margin: 15px 0;
+    text-align: left;
+  }
+
+  .price-card.featured {
+    background: linear-gradient(135deg, #ffe4d1, #fff7ef);
+    transform: scale(1.03);
+  }
+
+  /* MỤC HÌNH ẢNH */
+  .gallery-grid {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+  }
+
+  .gallery-grid img {
+    width: 100%;
+    height: 160px;
+    border-radius: 15px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    transition: 0.3s;
+    cursor: pointer;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .gallery-grid img.visible { opacity: 1; transform: scale(1); }
+  .gallery-grid img:hover { transform: scale(1.1); }
+  /* SỨ MỆNH */
+  .mv-grid {
+    margin-top: 25px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+  }
+
+  .mv-card {
+    background: white;
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+    opacity: 0;
+    transform: translateY(40px);
+    transition: 0.5s;
+  }
+
+  .mv-card.visible { opacity: 1; transform: translateY(0); }
+
+  .mv-card h3 {
+    font-family: 'Baloo 2';
+    color: #ff6b35;
+    margin-bottom: 10px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: #004aad;
+    text-align: center;
+    padding: 25px;
+    color: white;
+    margin-top: 60px;
+    font-size: 0.9em;
+  }
+  /* LIÊN HỆ – BỐ CỤC 2 CỘT */
+.contact-container {
+  width: 90%;
+  margin: 30px auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 30px;
+  align-items: start;
+}
+
+/* CARD thông tin */
+.contact-info {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  text-align: left;
+  animation: fadeIn 0.8s ease;
+}
+.contact-info h3 {
+  font-family: 'Baloo 2';
+  font-size: 1.4em;
+  color: #004aad;
+  margin-bottom: 10px;
+}
+.contact-info p {
+  margin: 10px 0;
+  font-size: 1.05em;
+}
+.contact-info i {
+  color: #ff6b35;
+  margin-right: 8px;
+}
+
+/* Giờ mở cửa */
+.contact-hours {
+  margin-top: 20px;
+  padding: 15px;
+  background: #eaf3ff;
+  border-radius: 12px;
+}
+.contact-hours h4 {
+  color: #ff6b35;
+  margin-bottom: 5px;
+}
+
+/* FORM đẹp + pastel */
+.contact-form.enhanced {
+  background: linear-gradient(135deg, #f4f9ff, #fff4ee);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  animation: fadeIn 0.8s ease;
+}
+.contact-form h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004aad;
+  font-family: 'Baloo 2';
+}
+
+.input-row {
+  display: flex;
+  gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  margin-bottom: 15px;
+  font-size: 1em;
+  transition: 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #ff6b35;
+  box-shadow: 0 0 8px rgba(255,107,53,0.4);
+  outline: none;
+}
+
+/* Bản đồ bo góc + bóng */
+.map-box {
+  width: 90%;
+  margin: 30px auto;
+}
+.map-box iframe {
+  width: 100%;
+  height: 300px;
+  border-radius: 20px;
+  border: 0;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-container {
+    grid-template-columns: 1fr;
+  }
+  .input-row {
+    flex-direction: column;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>🏋️‍♂️ Thuc Gym - NÂNG TẦM SỨC KHỎE CỦA BẠN 🏋️‍♀️</header>
+
+<nav id="navbar">
+  <a onclick="showSection('gioithieu')" class="active">Giới thiệu</a>
+  <a onclick="showSection('dichvu')">Dịch vụ</a>
+  <a onclick="showSection('hlv')">Huấn luyện viên</a>
+  <a onclick="showSection('uudai')">Ưu đãi</a>
+  <a onclick="showSection('banggia')">Bảng giá</a>
+  <a onclick="showSection('gallery')">Hình ảnh</a>
+  <a onclick="showSection('mission')">Sứ mệnh</a>
+  <a onclick="showSection('lienhe')">Liên hệ</a>
+</nav>
+
+<!-- GIỚI THIỆU -->
+<section id="gioithieu" class="active">
+  <div class="hero"> 
+    <div class="hero-text">
+      <h2>CHÀO MỪNG ĐẾN VỚI ThucGym!</h2>
+       <p>“Thể Hình, Thể Thao, Thể Lực”</p> 
+      <p>Môi trường tập luyện hiện đại, máy móc cao cấp và HLV chuyên nghiệp 💪</p>
+      <button class="btn" onclick="showSection('dichvu')">Khám phá dịch vụ</button>
+    </div>
+    <img src="ảnh phòng gym.webp">
+  </div>
+</section>
+
+<!-- DỊCH VỤ -->
+<section id="dichvu">
+  <h2>🔥 DỊCH VỤ NỔI BẬT 🔥</h2>
+  <div class="service-grid">
+    <div class="service-card"><img src="ảnh gynchuyennghiep.jpg"><h3>Tập Gym chuyên nghiệp</h3><p>Trang thiết bị hiện đại.</p></div>
+    <div class="service-card"><img src="ảnh yoga&thiền.jpg"><h3>Yoga & Thiền</h3><p>Giúp cân bằng cơ thể và tinh thần.</p></div>
+    <div class="service-card"><img src="ảnh boxing.jpg"><h3>Boxing & Fitness</h3><p>Tăng sức mạnh & giải tỏa stress.</p></div>
+  </div>
+</section>
+
+<!-- HUẤN LUYỆN VIÊN -->
+<section id="hlv">
+  <h2>💪 ĐỘI NGŨ HUẤN LUYỆN VIÊN 💪</h2>
+  <div class="coach-grid">
+    <div class="coach-card"><img src="hlv gym.jpg"><h3>HLV Minh Tiến</h3><p> Kinh nghiệm tăng cơ – giảm mỡ.</p></div>
+    <div class="coach-card"><img src="hlv yoga.jpg"><h3>HLV Lan Anh</h3><p>Yoga – Pilates chuyên sâu.</p></div>
+    <div class="coach-card"><img src="hlv boxing.jpg"><h3>HLV Tuấn Tài </h3><p>Fitness & Boxing Coach.</p></div>
+  </div>
+</section>
+
+<!-- ƯU ĐÃI -->
+<section id="uudai">
+  <h2>🎉 ƯU ĐÃI HẤP DẪN 🎉</h2>
+  <div class="promo">
+    <h3>Giảm ngay 30% gói tập 6 tháng!</h3>
+    <p>Ưu đãi đến <b>30/11/2025</b></p>
+    <button class="btn" onclick="showSection('lienhe')">Đăng ký ngay</button>
+  </div>
+</section>
+
+<!-- BẢNG GIÁ -->
+<section id="banggia">
+  <h2>💰 BẢNG GIÁ TẬP LUYỆN 💰</h2>
+
+  <div class="price-grid">
+    <div class="price-card">
+      <h3>Gói Cơ Bản</h3>
+      <p class="price">399.000đ / tháng</p>
+      <ul>
+        <li>✔ Sử dụng tất cả máy tập</li>
+        <li>✔ Không giới hạn thời gian</li>
+        <li>✔ Tủ khóa miễn phí</li>
+      </ul>
+      <button class="btn" onclick="showSection('lienhe')">Đăng ký</button>
+    </div>
+
+    <div class="price-card featured">
+      <h3>Gói Tiêu Chuẩn</h3>
+      <p class="price">999.000đ / 3 tháng</p>
+      <ul>
+        <li>✔ Hỗ trợ HLV 1 buổi/tuần</li>
+        <li>✔ Miễn phí nước uống</li>
+        <li>✔ Phòng tắm sạch sẽ</li>
+      </ul>
+      <button class="btn">Gói tốt nhất</button>
+    </div>
+
+    <div class="price-card">
+      <h3>Gói Cao Cấp</h3>
+      <p class="price">1.699.000đ / 6 tháng</p>
+      <ul>
+        <li>✔ 3 buổi kèm HLV/tháng</li>
+        <li>✔ Tặng áo ThucGym</li>
+        <li>✔ Ưu tiên phòng xông hơi</li>
+      </ul>
+      <button class="btn" onclick="showSection('lienhe')">Đăng ký</button>
+    </div>
+  </div>
+</section>
+
+<!-- PHÒNG TRƯNG BÀY -->
+<section id="gallery">
+  <h2>📸  HÌNH ẢNH PHÒNG 📸</h2>
+  <div class="gallery-grid">
+    <img src="ảnh phonggym1.jpg">
+    <img src="ảnh phonggym2.jpg">
+    <img src="ảnh phòng yoga1.jpg">
+    <img src="ảnh phòng yoga2.jpg">
+    <img src="ảnh phòng boxing1.jpg">
+    <img src="ảnh phòng boxing2.jpg">
+  </div>
+</section>
+
+<!-- SỨ MỆNH -->
+<section id="mission">
+  <h2>🌟 SỨ MỆNH – TẦM NHÌN – GIÁ TRỊ 🌟</h2>
+
+  <div class="mv-grid">
+    <div class="mv-card">
+      <h3>Sứ mệnh</h3>
+      <p>Giúp cộng đồng xây dựng Sức khỏe – Tinh thần – Lối sống thể thao mỗi ngày.</p>
+    </div>
+
+    <div class="mv-card">
+      <h3>Tầm nhìn</h3>
+      <p>Trở thành hệ thống gym uy tín tại Hà Nội, nơi bắt đầu hành trình thay đổi bản thân.</p>
+    </div>
+
+    <div class="mv-card">
+      <h3>Giá trị cốt lõi</h3>
+      <p>Chuyên nghiệp – Tận tâm – Kỷ luật – Luôn cải tiến chất lượng.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PHẦN LIÊN HỆ -->
+<section id="lienhe">
+  <h2>📞 LIÊN HỆ VỚI ThucGym</h2>
+
+  <div class="contact-container">
+
+    <!-- Cột trái: Thông tin -->
+    <div class="contact-info">
+      <h3>Thông tin liên hệ</h3>
+
+      <p><i class="fa-solid fa-location-dot"></i> Hà Đông, Hà Nội</p>
+      <p><i class="fa-solid fa-envelope"></i> bathucgym@gmail.com</p>
+      <p><i class="fa-solid fa-phone"></i> 0909 888 999</p>
+
+      <div class="contact-hours">
+        <h4>🕒 Giờ mở cửa</h4>
+        <p>Thứ 2 – Chủ nhật</p>
+        <p><b>05:00 – 22:00</b></p>
+      </div>
+    </div>
+
+    <!-- Cột phải: Form -->
+    <div class="contact-form enhanced">
+      <h3>Gửi thông tin tư vấn</h3>
+      <form onsubmit="sendMessage(event)">
+
+        <div class="input-row">
+          <input type="text" id="name" placeholder="Họ và tên" required>
+          <input type="tel" id="phone" placeholder="Số điện thoại" required>
+        </div>
+
+        <input type="email" id="email" placeholder="Email" required>
+        <textarea id="message" rows="5" placeholder="Nội dung bạn cần tư vấn..." required></textarea>
+
+        <button class="btn" type="submit">📩 Gửi thông tin</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Bản đồ -->
+  <div class="map-box">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3723.891032763583!2d105.77721097465161!3d20.980902980659226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x313454bda5b9b2c9:0xf6c14cf994b7a8ef!2zSGEgxJDDrG5nLCBIw6AgxJDDrG5nLCBIw6AgTm9p!5e0!3m2!1svi!2s!4v1730818500000!5m2!1svi!2s"
+      allowfullscreen loading="lazy"></iframe>
+  </div>
+</section>
+<footer>© 2025 ThucGym | Sinh viên CNTT 19-10 Đại học Đại Nam 💻</footer>
+<script>
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll("nav a").forEach(a => a.classList.remove("active"));
+  document.querySelector(`nav a[onclick="showSection('${id}')"]`).classList.add("active");
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function sendMessage(event) {
+  event.preventDefault();
+  alert("✅ Gửi thành công!");
+  event.target.reset();
+}
+// THANH ĐIỀU HƯỚNG
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  if (window.scrollY > 30) nav.classList.add('shrink');
+  else nav.classList.remove('shrink');
+});
+// Animation
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.2 });
+document.querySelectorAll(
+  '.service-card, .coach-card, .price-card, .gallery-grid img, .mv-card'
+).forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
+
